@@ -19,6 +19,7 @@ import java.util.Properties;
 
 /**
  * @author Clinton Begin
+ * 插件的顶级接口
  */
 public interface Interceptor {
 

@@ -41,6 +41,7 @@ public class SimpleStatementHandler extends BaseStatementHandler {
     super(executor, mappedStatement, parameter, rowBounds, resultHandler, boundSql);
   }
 
+  // todo sql的最终执行
   @Override
   public int update(Statement statement) throws SQLException {
     String sql = boundSql.getSql();

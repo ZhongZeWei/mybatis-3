@@ -19,6 +19,7 @@ import org.apache.ibatis.exceptions.PersistenceException;
 
 /**
  * @author Clinton Begin
+ * 插件异常类
  */
 public class PluginException extends PersistenceException {
 

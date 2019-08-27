@@ -35,6 +35,7 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
 
 /**
  * @author Clinton Begin
+ * sql语句执行器
  */
 public abstract class BaseStatementHandler implements StatementHandler {
 

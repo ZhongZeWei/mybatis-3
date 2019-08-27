@@ -42,11 +42,25 @@ public class MapperProxyFactory<T> {
     return methodCache;
   }
 
+  /**
+   * newProxyInstance，方法有三个参数：
+   *
+   * loader: 用哪个类加载器去加载代理对象
+   *
+   * interfaces:动态代理类需要实现的接口
+   *
+   * InvocationHandler:动态代理方法在执行时，会调用h里面的invoke方法去执行
+   * @param mapperProxy
+   * @return
+   */
   @SuppressWarnings("unchecked")
+  // todo mapper接口的方法代理
   protected T newInstance(MapperProxy<T> mapperProxy) {
+    //mapperProxy很重要
     return (T) Proxy.newProxyInstance(mapperInterface.getClassLoader(), new Class[] { mapperInterface }, mapperProxy);
   }
 
+  //生成mapper代理类
   public T newInstance(SqlSession sqlSession) {
     final MapperProxy<T> mapperProxy = new MapperProxy<>(sqlSession, mapperInterface, methodCache);
     return newInstance(mapperProxy);

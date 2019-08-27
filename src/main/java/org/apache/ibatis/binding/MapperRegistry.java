@@ -34,16 +34,19 @@ import org.apache.ibatis.session.SqlSession;
 public class MapperRegistry {
 
   private final Configuration config;
+  //
   private final Map<Class<?>, MapperProxyFactory<?>> knownMappers = new HashMap<>();
 
   public MapperRegistry(Configuration config) {
     this.config = config;
   }
 
+  //获取mapper代理类
   @SuppressWarnings("unchecked")
   public <T> T getMapper(Class<T> type, SqlSession sqlSession) {
     final MapperProxyFactory<T> mapperProxyFactory = (MapperProxyFactory<T>) knownMappers.get(type);
     if (mapperProxyFactory == null) {
+      //检查是否有这个MapperProxyFactory
       throw new BindingException("Type " + type + " is not known to the MapperRegistry.");
     }
     try {

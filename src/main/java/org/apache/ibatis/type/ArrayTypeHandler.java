@@ -35,6 +35,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Clinton Begin
+ *
  */
 public class ArrayTypeHandler extends BaseTypeHandler<Object> {
 

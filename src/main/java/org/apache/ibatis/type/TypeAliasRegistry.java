@@ -34,11 +34,13 @@ import org.apache.ibatis.io.Resources;
 
 /**
  * @author Clinton Begin
+ * 类型别名注册
  */
 public class TypeAliasRegistry {
 
   private final Map<String, Class<?>> typeAliases = new HashMap<>();
 
+  //默认的别名注册
   public TypeAliasRegistry() {
     registerAlias("string", String.class);
 
@@ -102,6 +104,7 @@ public class TypeAliasRegistry {
 
   @SuppressWarnings("unchecked")
   // throws class cast exception as well if types cannot be assigned
+  //根据key获得别名
   public <T> Class<T> resolveAlias(String string) {
     try {
       if (string == null) {
@@ -111,6 +114,7 @@ public class TypeAliasRegistry {
       String key = string.toLowerCase(Locale.ENGLISH);
       Class<T> value;
       if (typeAliases.containsKey(key)) {
+        //取出value
         value = (Class<T>) typeAliases.get(key);
       } else {
         value = (Class<T>) Resources.classForName(string);
@@ -121,10 +125,12 @@ public class TypeAliasRegistry {
     }
   }
 
+  //根据包名注册别名
   public void registerAliases(String packageName) {
     registerAliases(packageName, Object.class);
   }
 
+  //根据包名注册
   public void registerAliases(String packageName, Class<?> superType) {
     ResolverUtil<Class<?>> resolverUtil = new ResolverUtil<>();
     resolverUtil.find(new ResolverUtil.IsA(superType), packageName);
@@ -138,15 +144,19 @@ public class TypeAliasRegistry {
     }
   }
 
+  //根据class获取别名
   public void registerAlias(Class<?> type) {
     String alias = type.getSimpleName();
     Alias aliasAnnotation = type.getAnnotation(Alias.class);
     if (aliasAnnotation != null) {
+      //是否可以从Alias注解中获取别名
       alias = aliasAnnotation.value();
     }
+    //注册别名
     registerAlias(alias, type);
   }
 
+  //注册别名
   public void registerAlias(String alias, Class<?> value) {
     if (alias == null) {
       throw new TypeException("The parameter alias cannot be null");
@@ -156,9 +166,11 @@ public class TypeAliasRegistry {
     if (typeAliases.containsKey(key) && typeAliases.get(key) != null && !typeAliases.get(key).equals(value)) {
       throw new TypeException("The alias '" + alias + "' is already mapped to the value '" + typeAliases.get(key).getName() + "'.");
     }
+    //注册别名
     typeAliases.put(key, value);
   }
 
+  //注册别名
   public void registerAlias(String alias, String value) {
     try {
       registerAlias(alias, Resources.classForName(value));
@@ -169,6 +181,7 @@ public class TypeAliasRegistry {
 
   /**
    * @since 3.2.2
+   * 获取所有别名的map
    */
   public Map<String, Class<?>> getTypeAliases() {
     return Collections.unmodifiableMap(typeAliases);

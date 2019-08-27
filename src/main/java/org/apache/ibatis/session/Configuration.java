@@ -97,6 +97,7 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
 
 /**
  * @author Clinton Begin
+ * config配置类
  */
 public class Configuration {
 
@@ -123,6 +124,7 @@ public class Configuration {
   protected Integer defaultStatementTimeout;
   protected Integer defaultFetchSize;
   protected ResultSetType defaultResultSetType;
+  //默认执行类型是simple
   protected ExecutorType defaultExecutorType = ExecutorType.SIMPLE;
   protected AutoMappingBehavior autoMappingBehavior = AutoMappingBehavior.PARTIAL;
   protected AutoMappingUnknownColumnBehavior autoMappingUnknownColumnBehavior = AutoMappingUnknownColumnBehavior.NONE;
@@ -144,6 +146,7 @@ public class Configuration {
    */
   protected Class<?> configurationFactory;
 
+  //
   protected final MapperRegistry mapperRegistry = new MapperRegistry(this);
   protected final InterceptorChain interceptorChain = new InterceptorChain();
   protected final TypeHandlerRegistry typeHandlerRegistry = new TypeHandlerRegistry();
@@ -598,15 +601,25 @@ public class Configuration {
     return newExecutor(transaction, defaultExecutorType);
   }
 
+  /**
+   * 获取sql执行器
+   * @param transaction
+   * @param executorType
+   * @return
+   */
   public Executor newExecutor(Transaction transaction, ExecutorType executorType) {
+    //默认执行类型是SIMPLE
     executorType = executorType == null ? defaultExecutorType : executorType;
     executorType = executorType == null ? ExecutorType.SIMPLE : executorType;
     Executor executor;
     if (ExecutorType.BATCH == executorType) {
+      //如果是批量类型
       executor = new BatchExecutor(this, transaction);
     } else if (ExecutorType.REUSE == executorType) {
+      //如果是重用类型
       executor = new ReuseExecutor(this, transaction);
     } else {
+      //如果是simple类型 sql执行器自带config和事务
       executor = new SimpleExecutor(this, transaction);
     }
     if (cacheEnabled) {
@@ -767,6 +780,7 @@ public class Configuration {
     mapperRegistry.addMappers(packageName, superType);
   }
 
+  //注册mapper
   public void addMappers(String packageName) {
     mapperRegistry.addMappers(packageName);
   }

@@ -19,6 +19,7 @@ import org.apache.ibatis.exceptions.PersistenceException;
 
 /**
  * @author Clinton Begin
+ * 类型错误异常
  */
 public class TypeException extends PersistenceException {
 

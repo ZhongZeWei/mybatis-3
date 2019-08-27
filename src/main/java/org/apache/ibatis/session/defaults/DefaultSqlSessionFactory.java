@@ -38,10 +38,12 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
 
   private final Configuration configuration;
 
+  //todo SqlSessionFactory的构建方法
   public DefaultSqlSessionFactory(Configuration configuration) {
     this.configuration = configuration;
   }
 
+  //获取SqlSession
   @Override
   public SqlSession openSession() {
     return openSessionFromDataSource(configuration.getDefaultExecutorType(), null, false);
@@ -87,13 +89,25 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
     return configuration;
   }
 
+  /**
+   * todo 获取SqlSession
+   * @param execType 执行的类型
+   * @param level  事务级别
+   * @param autoCommit 是否自动提交
+   * @return
+   */
   private SqlSession openSessionFromDataSource(ExecutorType execType, TransactionIsolationLevel level, boolean autoCommit) {
     Transaction tx = null;
     try {
+      //数据库环境
       final Environment environment = configuration.getEnvironment();
+      //事务工厂
       final TransactionFactory transactionFactory = getTransactionFactoryFromEnvironment(environment);
+      //事务
       tx = transactionFactory.newTransaction(environment.getDataSource(), level, autoCommit);
+      //获取一个执行器
       final Executor executor = configuration.newExecutor(tx, execType);
+      //封装一个DefaultSqlSession回去
       return new DefaultSqlSession(configuration, executor, autoCommit);
     } catch (Exception e) {
       closeTransaction(tx); // may have fetched a connection so lets call close()

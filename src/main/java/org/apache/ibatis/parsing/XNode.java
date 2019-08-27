@@ -301,6 +301,7 @@ public class XNode {
     return children;
   }
 
+  //获取 <xxx name="username" value="dev_user"/>这样的节点
   public Properties getChildrenAsProperties() {
     Properties properties = new Properties();
     for (XNode child : getChildren()) {
